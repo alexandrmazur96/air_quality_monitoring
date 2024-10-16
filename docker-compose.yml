@@ -19,7 +19,7 @@ services:
             - ./docker/php/config/ext/${XDEBUG_ENABLE}-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
             - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
         environment:
-            PHP_IDE_CONFIG: "serverName=hslibs-panel"
+            PHP_IDE_CONFIG: "serverName=air-quality"
 
     mysql:
         image: mysql:9.1.0
