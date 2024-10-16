@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite build --mode=development",
+        "watch": "vite build --mode=development --watch"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
