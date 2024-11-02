@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Mazur\Http\Controllers;
 
 abstract class Controller
 {
-    //
 }
