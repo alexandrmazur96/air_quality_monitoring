@@ -9,7 +9,9 @@ dotenv.config();
 export default defineConfig({
     mode: process.env.NODE_ENV,
     plugins: [
-        vue(),
+        vue({
+            isProduction: process.env.NODE_ENV === 'production',
+        }),
         laravel({
             input: ['resources/scss/app.scss', 'resources/js/app.js'],
             refresh: true,
@@ -21,5 +23,12 @@ export default defineConfig({
             '@/': path.resolve(__dirname, 'resources/js'),
             'images': path.resolve(__dirname, 'resources/images'),
         },
-    }
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                api: 'modern-compiler',
+            },
+        },
+    },
 });
