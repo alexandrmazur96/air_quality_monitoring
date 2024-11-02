@@ -1,15 +1,16 @@
 {
-    "name": "laravel/laravel",
+    "name": "mazur/air_quality_monitoring",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Air Quality Monitoring System.",
+    "keywords": ["environmental", "air quality"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.1",
         "laravel/pint": "^1.13",
@@ -20,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
+            "Mazur\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
