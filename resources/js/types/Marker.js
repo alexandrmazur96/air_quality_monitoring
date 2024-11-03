@@ -26,6 +26,10 @@ export class Marker {
         if (longitude < -180 || longitude > 180) {
             throw new Error(`Invalid longitude: ${longitude}`);
         }
+        if (type === TYPE_AIR_QUALITY && airQualityIdx < 0) {
+            throw new Error(`Air quality index should be positive number: ${airQualityIdx}`);
+        }
+
         if (type === TYPE_AIR_QUALITY) {
             if (airQualityIdx === null) {
                 throw new Error(`Air quality index is required for marker type ${type}`);
@@ -57,7 +61,7 @@ export class Marker {
             return 'images/markers/m-user.svg';
         }
         if (this.type === TYPE_AIR_QUALITY) {
-            return `images/markers/m-air-quality-${this.airQualityIdx}.svg`;
+            return `images/markers/m-air-quality-${Math.round(parseFloat(this.airQualityIdx))}.svg`;
         }
     }
 }
