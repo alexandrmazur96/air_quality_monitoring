@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mazur\Application\AirQuality\Enums;
+namespace App\Application\AirQuality\AqiCalculator\Enums;
 
 enum AqiType: string
 {
