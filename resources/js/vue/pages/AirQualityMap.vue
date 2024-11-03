@@ -33,8 +33,8 @@ export default {
     mounted() {
         this.map = toRaw(leaflet.map('leafletMap', {zoomControl: false}));
 
-        const zoomToUserFn = this.locateAndZoomIn;
         const zoomToBordersFn = this.zoomToBorders;
+        const zoomToUserFn = this.locateAndZoomIn;
 
         const zoomToBorderControl = L.Control.extend({
             options: {

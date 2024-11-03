@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
+use Mazur\Http\Controllers\AirQualityMapController;
 
-Route::get('/', static function (): View {
-    return view('welcome');
-});
+Route::get('/', [AirQualityMapController::class, 'index']);
