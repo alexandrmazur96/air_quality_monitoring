@@ -29,7 +29,7 @@ export default {
 
         this.map = shallowRef(
             leaflet.map('leafletMap', {zoomControl: false})
-                .setView([this.userMarker.latitude, this.userMarker.longitude], 7)
+                // .setView([this.userMarker.latitude, this.userMarker.longitude], 7)
         );
 
         leaflet
@@ -45,7 +45,7 @@ export default {
                 style: {
                     opacity: .8,
                     color: "#595cef",
-                    fillOpacity: .05,
+                    fillOpacity: .03,
                     weight: 1,
                 }
             })
@@ -58,6 +58,7 @@ export default {
     methods: {
         fillMarkers() {
             const markers = [
+                // todo: use location from geolocation
                 new Marker(50.450001, 30.523333, Marker.TYPE_USER),
                 // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
                 // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
