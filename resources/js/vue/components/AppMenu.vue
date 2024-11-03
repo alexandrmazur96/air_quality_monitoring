@@ -10,7 +10,7 @@
                         <Button type="button" @click="closeCallback" icon="pi pi-times" rounded outlined></Button>
                     </span>
                 </div>
-                <hr class="mt-4 mx-4 border-t border-0 border-surface-200 dark:border-surface-700" />
+                <hr class="mt-4 mb-4 mx-4 border-t border-0 border-surface-200 dark:border-surface-700" />
 
                 <div class="overflow-y-auto">
                     <ul class="list-none p-0 m-0 overflow-hidden">
