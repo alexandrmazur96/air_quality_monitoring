@@ -7,9 +7,15 @@
 import leaflet from 'leaflet';
 import {useGeolocation} from "@vueuse/core";
 import {Marker} from "../../types/Marker.js";
-import {shallowRef} from "vue";
+import {toRaw} from "vue";
 import ukraine from "../../../geojson/ukraine-geoboundaries-adm0.json";
 import AppMenu from "../components/AppMenu.vue";
+
+// Kyiv coordinates
+const DEFAULT_LATITUDE = 50.450001;
+const DEFAULT_LONGITUDE = 30.523333;
+
+const {isSupported, coords, error} = useGeolocation()
 
 export default {
     name: "AirQualityMap",
@@ -17,20 +23,56 @@ export default {
     data() {
         return {
             map: null,
-            userMarker: new Marker(50.450001, 30.523333, Marker.TYPE_USER),
+            border: null,
+            userOnMap: null,
+            userMarker: new Marker(DEFAULT_LATITUDE, DEFAULT_LONGITUDE, Marker.TYPE_USER),
+            geolocationCoords: coords,
+            geolocationError: error,
         };
     },
     mounted() {
-        const {coords} = useGeolocation();
-        // console.log(coords.value);
-        if (coords.value.latitude !== Number.POSITIVE_INFINITY && coords.value.longitude !== Number.POSITIVE_INFINITY) {
-            this.userMarker = new Marker(coords.value.latitude, coords.value.longitude, Marker.TYPE_USER);
-        }
+        this.map = toRaw(leaflet.map('leafletMap', {zoomControl: false}));
 
-        this.map = shallowRef(
-            leaflet.map('leafletMap', {zoomControl: false})
-                // .setView([this.userMarker.latitude, this.userMarker.longitude], 7)
-        );
+        const zoomToUserFn = this.locateAndZoomIn;
+        const zoomToBordersFn = this.zoomToBorders;
+
+        const zoomToBorderControl = L.Control.extend({
+            options: {
+                position: 'bottomright'
+            },
+
+            onAdd: function (map) {
+                const btn = L.DomUtil.create('button', 'leaflet-bar leaflet-control leaflet-control-custom');
+                btn.innerHTML = '<i class="pi pi-globe"></i>';
+                btn.className = 'p-button p-button-rounded p-button-info w-14 h-14';
+                btn.title = 'Zoom to borders';
+                btn.onclick = function () {
+                    zoomToBordersFn();
+                }
+
+                return btn;
+            }
+        });
+        const currentLocationControl = L.Control.extend({
+            options: {
+                position: 'bottomright'
+            },
+
+            onAdd: function (map) {
+                const btn = L.DomUtil.create('button', 'leaflet-bar leaflet-control leaflet-control-custom');
+                btn.innerHTML = '<i class="pi pi-map-marker"></i>';
+                btn.className = 'p-button p-button-rounded p-button-info w-14 h-14';
+                btn.title = 'Locate me';
+                btn.onclick = function () {
+                    zoomToUserFn();
+                }
+
+                return btn;
+            }
+        });
+
+        this.map.addControl(new currentLocationControl());
+        this.map.addControl(new zoomToBorderControl());
 
         leaflet
             .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -40,7 +82,7 @@ export default {
             })
             .addTo(this.map);
 
-        let border = leaflet
+        this.border = leaflet
             .geoJSON(ukraine, {
                 style: {
                     opacity: .8,
@@ -51,15 +93,36 @@ export default {
             })
             .addTo(this.map);
 
-        this.map.fitBounds(border.getBounds());
-
-        this.fillMarkers();
+        this.zoomToBorders();
     },
     methods: {
+        locateAndZoomIn() {
+            this.map.setView([this.geolocationCoords.latitude, this.geolocationCoords.longitude], 10);
+        },
+        zoomToBorders() {
+            this.map.fitBounds(this.border.getBounds());
+        },
+        placeUserMarker() {
+            if (this.userOnMap) {
+                this.map.removeLayer(this.userOnMap);
+            }
+
+            this.userOnMap = leaflet
+                .marker([this.geolocationCoords.latitude, this.geolocationCoords.longitude], {
+                    icon: leaflet.icon({
+                        iconUrl: this.userMarker.getIcon(),
+                        iconSize: [25, 41],
+                        shadowSize: [50, 64],
+                        iconAnchor: [12, 41],
+                        shadowAnchor: [4, 62],
+                    }),
+                })
+                .addTo(this.map)
+                .bindPopup('You are here');
+        },
         fillMarkers() {
             const markers = [
-                // todo: use location from geolocation
-                new Marker(50.450001, 30.523333, Marker.TYPE_USER),
+                // new Marker(this.coords.latitude, this.coords.longitude, Marker.TYPE_USER),
                 // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
                 // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
                 // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
@@ -81,6 +144,13 @@ export default {
             });
         }
     },
-    watch: {},
+    watch: {
+        geolocationCoords: {
+            handler: function () {
+                this.placeUserMarker();
+            },
+            deep: true
+        }
+    },
 };
 </script>
