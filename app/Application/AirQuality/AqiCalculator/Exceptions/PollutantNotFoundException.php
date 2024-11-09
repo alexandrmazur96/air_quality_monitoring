@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\AirQuality\AqiCalculator\Exceptions;
+namespace Mazur\Application\AirQuality\AqiCalculator\Exceptions;
 
 use Exception;
 
