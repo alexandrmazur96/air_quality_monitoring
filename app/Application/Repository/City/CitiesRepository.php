@@ -20,4 +20,12 @@ final class CitiesRepository
     ): Collection {
         return City::query()->with($with)->get($fields);
     }
+
+    public function findByCoords(float $latitude, float $longitude): ?City
+    {
+        return City::query()
+            ->where('latitude', $latitude)
+            ->where('longitude', $longitude)
+            ->first();
+    }
 }
