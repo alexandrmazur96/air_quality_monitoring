@@ -8,7 +8,6 @@ final readonly class AirQuality
 {
     public function __construct(
         public int $cityId,
-        public int $aqi,
         public float $co,
         public float $no,
         public float $no2,
