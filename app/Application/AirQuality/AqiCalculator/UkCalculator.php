@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Application\AirQuality\AqiCalculator;
+namespace Mazur\Application\AirQuality\AqiCalculator;
 
-use App\Application\AirQuality\AqiCalculator\Enums\Pollutant;
-use App\Application\AirQuality\AqiCalculator\Exceptions\PollutantNotFoundException;
+use Mazur\Application\AirQuality\AqiCalculator\Enums\Pollutant;
+use Mazur\Application\AirQuality\AqiCalculator\Exceptions\PollutantNotFoundException;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 
 final class UkCalculator implements CalculatorInterface
@@ -33,63 +33,63 @@ final class UkCalculator implements CalculatorInterface
     private const array SCALE = [
         Pollutant::SO2->value => [
             [1, 0, 88],
-            [2, 89, 177],
-            [3, 178, 266],
-            [4, 267, 354],
-            [5, 355, 443],
-            [6, 444, 532],
-            [7, 533, 710],
-            [8, 711, 887],
-            [9, 888, 1064],
-            [10, 1065, PHP_INT_MAX],
+            [2, 88.000001, 177],
+            [3, 177.000001, 266],
+            [4, 266.000001, 354],
+            [5, 354.000001, 443],
+            [6, 443.000001, 532],
+            [7, 532.000001, 710],
+            [8, 710.000001, 887],
+            [9, 887.000001, 1064],
+            [10, 1064.000001, PHP_INT_MAX],
         ],
         Pollutant::NO2->value => [
             [1, 0, 67],
-            [2, 68, 134],
-            [3, 135, 200],
-            [4, 201, 267],
-            [5, 268, 334],
-            [6, 335, 400],
-            [7, 401, 467],
-            [8, 468, 534],
-            [9, 535, 600],
-            [10, 601, PHP_INT_MAX],
+            [2, 67.000001, 134],
+            [3, 134.000001, 200],
+            [4, 200.000001, 267],
+            [5, 267.000001, 334],
+            [6, 334.000001, 400],
+            [7, 400.000001, 467],
+            [8, 467.000001, 534],
+            [9, 534.000001, 600],
+            [10, 600.000001, PHP_INT_MAX],
         ],
         Pollutant::PM2_5->value => [
             [1, 0, 11],
-            [2, 12, 23],
-            [3, 24, 35],
-            [4, 36, 41],
-            [5, 42, 47],
-            [6, 48, 53],
-            [7, 54, 58],
-            [8, 59, 64],
-            [9, 65, 70],
-            [10, 71, PHP_INT_MAX],
+            [2, 11.000001, 23],
+            [3, 23.000001, 35],
+            [4, 35.000001, 41],
+            [5, 41.000001, 47],
+            [6, 47.000001, 53],
+            [7, 53.000001, 58],
+            [8, 58.000001, 64],
+            [9, 64.000001, 70],
+            [10, 70.000001, PHP_INT_MAX],
         ],
         Pollutant::PM10->value => [
             [1, 0, 16],
-            [2, 17, 33],
-            [3, 34, 50],
-            [4, 52, 58],
-            [5, 59, 66],
-            [6, 67, 75],
-            [7, 76, 83],
-            [8, 84, 91],
-            [9, 92, 100],
-            [10, 101, PHP_INT_MAX],
+            [2, 16.000001, 33],
+            [3, 33.000001, 50],
+            [4, 50.000001, 58],
+            [5, 58.000001, 66],
+            [6, 66.000001, 75],
+            [7, 75.000001, 83],
+            [8, 83.000001, 91],
+            [9, 91.000001, 100],
+            [10, 100.000001, PHP_INT_MAX],
         ],
         Pollutant::O3->value => [
             [1, 0, 33],
-            [2, 34, 66],
-            [3, 67, 100],
-            [4, 101, 120],
-            [5, 121, 140],
-            [6, 141, 160],
-            [7, 161, 187],
-            [8, 188, 213],
-            [9, 214, 240],
-            [10, 241, PHP_INT_MAX],
+            [2, 33.000001, 66],
+            [3, 66.000001, 100],
+            [4, 100.000001, 120],
+            [5, 120.000001, 140],
+            [6, 140.000001, 160],
+            [7, 160.000001, 187],
+            [8, 187.000001, 213],
+            [9, 213.000001, 240],
+            [10, 240.000001, PHP_INT_MAX],
         ],
     ];
 
@@ -120,6 +120,6 @@ final class UkCalculator implements CalculatorInterface
             }
         }
 
-        throw new PollutantNotFoundException('Pollutant concentration not found in the scale: ' . $concentration);
+        throw new PollutantNotFoundException('Pollutant ' . $pollutant->value . ' concentration not found in the scale: ' . $concentration);
     }
 }
