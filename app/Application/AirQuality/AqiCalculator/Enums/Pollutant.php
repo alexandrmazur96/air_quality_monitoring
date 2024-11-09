@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\AirQuality\AqiCalculator\Enums;
+namespace Mazur\Application\AirQuality\AqiCalculator\Enums;
 
 enum Pollutant: string
 {
