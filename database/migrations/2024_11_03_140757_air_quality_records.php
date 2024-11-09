@@ -19,7 +19,9 @@ return new class extends Migration
             $table->double('no2');
             $table->double('so2');
             $table->double('co');
-            $table->unsignedTinyInteger('aqi');
+            $table->unsignedSmallInteger('aqi_uk')->index();
+            $table->unsignedSmallInteger('aqi_us')->index();
+            $table->unsignedSmallInteger('aqi_eu')->index();
             $table->timestamps();
 
             $table->index('created_at');
