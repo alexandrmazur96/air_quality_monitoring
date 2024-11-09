@@ -11,7 +11,9 @@ use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use JsonException;
+use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\Coordinates;
+use Mazur\Application\Repository\City\CitiesRepository;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
@@ -24,8 +26,10 @@ final class OpenWeatherIntegration
 {
     private const string ACTION_AIR_POLLUTION = '/air_pollution';
 
-    public function __construct(private readonly Client $httpClient)
-    {
+    public function __construct(
+        private readonly Client $httpClient,
+        private readonly CitiesRepository $citiesRepository
+    ) {
     }
 
     /**
@@ -89,7 +93,20 @@ final class OpenWeatherIntegration
             }
 
             $rawResponse = $response->getBody()->getContents();
-            $results->push(json_decode($rawResponse, true, 512, JSON_THROW_ON_ERROR));
+            $arr = json_decode($rawResponse, true, 512, JSON_THROW_ON_ERROR);
+            $results->push(
+                new AirQuality(
+                    cityId: $this->citiesRepository->findByCoords($arr['coord']['lat'], $arr['coord']['lon'])->id,
+                    co: $arr['list'][0]['components']['co'],
+                    no: $arr['list'][0]['components']['no'],
+                    no2: $arr['list'][0]['components']['no2'],
+                    o3: $arr['list'][0]['components']['o3'],
+                    so2: $arr['list'][0]['components']['so2'],
+                    pm2_5: $arr['list'][0]['components']['pm2_5'],
+                    pm10: $arr['list'][0]['components']['pm10'],
+                    nh3: $arr['list'][0]['components']['nh3'],
+                )
+            );
         }
 
         return $results;
@@ -111,7 +128,19 @@ final class OpenWeatherIntegration
 
             $rawResponse = $response->getBody()->getContents();
 
-            yield json_decode($rawResponse, true, 512, JSON_THROW_ON_ERROR);
+            $arr = json_decode($rawResponse, true, 512, JSON_THROW_ON_ERROR);
+
+            yield new AirQuality(
+                cityId: $this->citiesRepository->findByCoords($arr['coord']['lat'], $arr['coord']['lon'])->id,
+                co: $arr['list'][0]['components']['co'],
+                no: $arr['list'][0]['components']['no'],
+                no2: $arr['list'][0]['components']['no2'],
+                o3: $arr['list'][0]['components']['o3'],
+                so2: $arr['list'][0]['components']['so2'],
+                pm2_5: $arr['list'][0]['components']['pm2_5'],
+                pm10: $arr['list'][0]['components']['pm10'],
+                nh3: $arr['list'][0]['components']['nh3'],
+            );
         }
     }
 
