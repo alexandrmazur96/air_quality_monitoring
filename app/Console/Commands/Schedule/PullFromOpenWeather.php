@@ -32,19 +32,22 @@ final class PullFromOpenWeather extends Command
         $bar->start();
         /** @var Collection<array-key, City> $citiesChunk */
         foreach ($cities->chunk(self::CHUNK_SIZE) as $citiesChunk) {
-            $resultsForChunk = $openWeatherIntegration->getAirQualityForMany($citiesChunk->map(
-                static fn (City $city): Coordinates => new Coordinates(
-                    latitude: $city->latitude,
-                    longitude: $city->longitude
-                )
-            ));
+            $resultsForChunk = $openWeatherIntegration->getAirQualityForMany(
+                $citiesChunk->map(
+                    static fn(City $city): Coordinates => new Coordinates(
+                        latitude : $city->latitude,
+                        longitude: $city->longitude
+                    )
+                ),
+                true
+            );
 
-            dd($resultsForChunk);
             $airQualityRepository->create($resultsForChunk);
 
             $bar->advance(self::CHUNK_SIZE);
         }
         $bar->finish();
+        $this->info('');
 
         $this->info('Air quality data from OpenWeather has been pulled');
     }
