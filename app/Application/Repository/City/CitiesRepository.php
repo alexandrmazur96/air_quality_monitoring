@@ -23,9 +23,19 @@ final class CitiesRepository
 
     public function findByCoords(float $latitude, float $longitude): ?City
     {
+        $latStr = (string)$latitude;
+        $lonStr = (string)$longitude;
+        if (strlen($latStr) > 5) {
+            $latStr = substr($latStr, 0, 5);
+        }
+        if (strlen($lonStr) > 5) {
+            $lonStr = substr($lonStr, 0, 5);
+        }
+
+        /** @var City|null $city */
         return City::query()
-            ->where('latitude', $latitude)
-            ->where('longitude', $longitude)
+            ->where('latitude', 'like', $latStr . '%')
+            ->where('longitude', 'like', $lonStr . '%')
             ->first();
     }
 }
