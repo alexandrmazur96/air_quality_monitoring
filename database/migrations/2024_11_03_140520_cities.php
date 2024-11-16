@@ -12,14 +12,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->char('country', 2);
-            $table->string('state');
+            $table->string('state')->nullable();
             $table->string('latitude');
             $table->string('longitude');
             $table->timestamps();
 
             $table->index('name');
             $table->index('country');
-            $table->index('state');
+            $table->index(['latitude', 'longitude'], 'lat_lng_idx');
         });
     }
 
