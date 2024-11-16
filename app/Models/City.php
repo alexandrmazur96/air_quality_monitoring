@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $country
  * @property string $state
- * @property float $latitude
- * @property float $longitude
+ * @property string $latitude
+ * @property string $longitude
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
