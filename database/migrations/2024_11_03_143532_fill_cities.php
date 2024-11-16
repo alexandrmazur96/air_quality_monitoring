@@ -7,7 +7,7 @@ use Mazur\Models\City;
 
 return new class extends Migration
 {
-    private const int MIN_POPULATION = 30_000;
+    private const int MIN_POPULATION = 10_000;
 
     public function up(): void
     {
