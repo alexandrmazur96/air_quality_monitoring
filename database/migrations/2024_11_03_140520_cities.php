@@ -13,8 +13,8 @@ return new class extends Migration
             $table->string('name');
             $table->char('country', 2);
             $table->string('state');
-            $table->double('latitude');
-            $table->double('longitude');
+            $table->string('latitude');
+            $table->string('longitude');
             $table->timestamps();
 
             $table->index('name');
