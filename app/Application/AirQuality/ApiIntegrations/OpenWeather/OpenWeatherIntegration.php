@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use JsonException;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\Coordinates;
@@ -130,8 +131,17 @@ final class OpenWeatherIntegration
 
             $arr = json_decode($rawResponse, true, 512, JSON_THROW_ON_ERROR);
 
+            $city = $this->citiesRepository->findByCoords((float)$arr['coord']['lat'], (float)$arr['coord']['lon']);
+            if ($city === null) {
+                Log::critical('Unable to find corresponding city for coordinates', [
+                    'latitude' => $arr['coord']['lat'],
+                    'longitude' => $arr['coord']['lon'],
+                ]);
+                continue;
+            }
+
             yield new AirQuality(
-                cityId: $this->citiesRepository->findByCoords($arr['coord']['lat'], $arr['coord']['lon'])->id,
+                cityId: $city->id,
                 co: $arr['list'][0]['components']['co'],
                 no: $arr['list'][0]['components']['no'],
                 no2: $arr['list'][0]['components']['no2'],
