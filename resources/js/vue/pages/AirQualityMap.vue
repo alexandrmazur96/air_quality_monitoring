@@ -30,7 +30,7 @@ export default {
             geolocationError: error,
         };
     },
-    mounted() {
+    async mounted() {
         this.map = toRaw(leaflet.map('leafletMap', {zoomControl: false}));
 
         const zoomToBordersFn = this.zoomToBorders;
@@ -94,6 +94,8 @@ export default {
             .addTo(this.map);
 
         this.zoomToBorders();
+
+        await this.fillMarkers();
     },
     methods: {
         locateAndZoomIn() {
@@ -120,28 +122,30 @@ export default {
                 .addTo(this.map)
                 .bindPopup('You are here');
         },
-        fillMarkers() {
-            const markers = [
-                // new Marker(this.coords.latitude, this.coords.longitude, Marker.TYPE_USER),
-                // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
-                // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
-                // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
-                // new Marker(50.450001, 30.523333, Marker.TYPE_USER),
-            ];
-
-            markers.forEach(marker => {
-                leaflet
-                    .marker([marker.latitude, marker.longitude], {
-                        icon: leaflet.icon({
-                            iconUrl: marker.getIcon(),
-                            iconSize: [25, 41],
-                            shadowSize: [50, 64],
-                            iconAnchor: [12, 41],
-                            shadowAnchor: [4, 62],
-                        }),
-                    })
-                    .addTo(this.map);
+        async fillMarkers() {
+            await this.loadMarkers().then(markers => {
+                markers.forEach(marker => {
+                    leaflet
+                        .marker([marker.latitude, marker.longitude], {
+                            icon: leaflet.icon({
+                                iconUrl: marker.getIcon(),
+                                iconSize: [25, 41],
+                                shadowSize: [50, 64],
+                                iconAnchor: [12, 41],
+                                shadowAnchor: [4, 62],
+                            }),
+                        })
+                        .addTo(this.map);
+                });
             });
+        },
+        async loadMarkers() {
+            try {
+                const response = await axios.get('/current-air-quality-indexes');
+                return response.data.map((marker) => new Marker(marker.latitude, marker.longitude, Marker.TYPE_AIR_QUALITY, marker.aqi_us));
+            } catch (error) {
+                throw new Error('Error while fetching markers');
+            }
         }
     },
     watch: {
