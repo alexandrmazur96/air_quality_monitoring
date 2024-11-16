@@ -29,6 +29,7 @@ final class AirQualityRecord extends Model
     protected $table = 'air_quality_records';
 
     protected $fillable = [
+        'provider',
         'city_id',
         'pm10',
         'pm2_5',
@@ -38,8 +39,13 @@ final class AirQualityRecord extends Model
         'no2',
         'so2',
         'co',
-        'aqi',
+        'aqi_uk',
+        'aqi_us',
+        'aqi_eu',
+        'latest',
     ];
+
+    protected $casts = ['latest' => 'bool'];
 
     public function city(): BelongsTo
     {
