@@ -6,7 +6,7 @@ namespace Mazur\Application\AirQuality\ApiIntegrations\Dto;
 
 final readonly class Coordinates
 {
-    public function __construct(public float $latitude, public float $longitude)
+    public function __construct(public string $latitude, public string $longitude)
     {
     }
 }
