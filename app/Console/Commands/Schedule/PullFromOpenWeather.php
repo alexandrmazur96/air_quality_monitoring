@@ -6,7 +6,9 @@ namespace Mazur\Console\Commands\Schedule;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\Coordinates;
+use Mazur\Application\AirQuality\ApiIntegrations\Enum\Provider;
 use Mazur\Application\AirQuality\ApiIntegrations\OpenWeather\OpenWeatherIntegration;
 use Mazur\Application\Repository\AirQuality\AirQualityRepository;
 use Mazur\Application\Repository\City\CitiesRepository;
@@ -30,6 +32,8 @@ final class PullFromOpenWeather extends Command
         $bar = $this->output->createProgressBar($cities->count());
 
         $bar->start();
+        DB::beginTransaction();
+        $airQualityRepository->markCurrentRecordsAsNonLatest(Provider::OPEN_WEATHER);
         /** @var Collection<array-key, City> $citiesChunk */
         foreach ($cities->chunk(self::CHUNK_SIZE) as $citiesChunk) {
             $resultsForChunk = $openWeatherIntegration->getAirQualityForMany(
@@ -41,11 +45,11 @@ final class PullFromOpenWeather extends Command
                 ),
                 true
             );
-
-            $airQualityRepository->create($resultsForChunk);
+            $airQualityRepository->create(Provider::OPEN_WEATHER, $resultsForChunk);
 
             $bar->advance(self::CHUNK_SIZE);
         }
+        DB::commit();
         $bar->finish();
         $this->info('');
 
