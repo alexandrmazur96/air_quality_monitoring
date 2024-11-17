@@ -42,17 +42,19 @@
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
-        ],
-        "dev": [
+        "build": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail\" \"npm run dev\" --names=server,queue,logs,vite"
+            "composer install --no-dev -o --prefer-dist --no-interaction --no-progress",
+            "@php artisan migrate",
+            "npm ci",
+            "npm run build",
+            "@post-build"
+        ],
+        "post-build": [
+            "@php artisan view:cache",
+            "@php artisan event:cache",
+            "@php artisan optimize",
+            "@php artisan queue:restart"
         ]
     },
     "extra": {
