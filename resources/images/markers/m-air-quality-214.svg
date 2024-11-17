@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="49.99036mm"
+   height="60.424675mm"
+   viewBox="0 0 49.99036 60.424675"
+   version="1.1"
+   id="svg1"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     showguides="true" />
+  <defs
+     id="defs1">
+    <rect
+       x="230"
+       y="65"
+       width="75"
+       height="75"
+       id="rect29" />
+    <linearGradient
+       id="swatch11">
+      <stop
+         style="stop-color:#0d95ff;stop-opacity:1;"
+         offset="0"
+         id="stop12" />
+    </linearGradient>
+  </defs>
+  <g
+     id="layer2"
+     transform="translate(-80.601813,-25.572642)">
+    <g
+       id="g30"
+       transform="translate(30.59282,25.554003)">
+      <path
+         style="fill:#660099;fill-opacity:1;stroke-width:0.187;stroke-dasharray:none"
+         id="path2"
+         d="M 99.999353,25.007313 A 24.99518,24.988674 0 0 1 75.00663,49.995987 24.99518,24.988674 0 0 1 50.008994,25.012226 24.99518,24.988674 0 0 1 74.996802,0.0186397 24.99518,24.988674 0 0 1 99.999351,24.997487 l -24.995178,0.0098 z" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke-width:0.230897;stroke-dasharray:none"
+         id="rect30"
+         width="2"
+         height="10"
+         x="74"
+         y="50" />
+      <text
+         xml:space="preserve"
+         transform="matrix(0.54255433,0,0,0.50863927,-61.463225,-24.94333)"
+         id="text29"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:48px;font-family:'Humanst521 BT';-inkscape-font-specification:'Humanst521 BT';text-align:center;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect29);shape-padding:6.97367;display:inline;fill:#000000;fill-opacity:1;stroke-width:0.706772;stroke-dasharray:none"
+         x="11.167969"
+         y="0"><tspan
+           x="215"
+           y="115"
+           id="tspan1">214</tspan></text>
+    </g>
+  </g>
+</svg>
