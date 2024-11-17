@@ -1,5 +1,14 @@
 <template>
-    <AppMenu></AppMenu>
+    <AppMenu />
+    <SelectButton optionLabel="label"
+                  optionValue="value"
+                  dataKey="value"
+                  :allow-empty="false"
+                  v-model="aqi_index_type"
+                  :options="aqi_index_types"
+                  class="absolute"
+                  style="z-index: 999999; left:50%;transform: translate(-50%, -50%);top:40px"
+                  @change="redrawMarkers" />
     <div id="leafletMap" class="h-screen w-full"></div>
 </template>
 
@@ -10,18 +19,31 @@ import {Marker} from "../../types/Marker.js";
 import {toRaw} from "vue";
 import ukraine from "../../../geojson/ukraine-geoboundaries-adm0.json";
 import AppMenu from "../components/AppMenu.vue";
+import SelectButton from "primevue/selectbutton";
 
 // Kyiv coordinates
 const DEFAULT_LATITUDE = 50.450001;
 const DEFAULT_LONGITUDE = 30.523333;
 
+const AQI_INDEX_TYPE_US = 'aqi_us';
+const AQI_INDEX_TYPE_UK = 'aqi_uk';
+const AQI_INDEX_TYPE_EU = 'aqi_eu';
+
 const {isSupported, coords, error} = useGeolocation()
 
 export default {
     name: "AirQualityMap",
-    components: {AppMenu},
+    components: {AppMenu, SelectButton},
     data() {
         return {
+            aqi_index_type: AQI_INDEX_TYPE_US,
+            aqi_index_types: [
+                {label: 'US', value: AQI_INDEX_TYPE_US},
+                {label: 'UK', value: AQI_INDEX_TYPE_UK},
+                {label: 'EU', value: AQI_INDEX_TYPE_EU},
+            ],
+            rawMarkers: [],
+            markersOnMap: [],
             map: null,
             border: null,
             userOnMap: null,
@@ -122,9 +144,21 @@ export default {
                 .addTo(this.map)
                 .bindPopup('You are here');
         },
-        async fillMarkers() {
-            await this.loadMarkers().then(markers => {
-                markers.forEach(marker => {
+        redrawMarkers() {
+            if (!this.aqi_index_type) {
+                return;
+            }
+
+            this.markersOnMap.forEach(marker => {
+                this.map.removeLayer(marker);
+            });
+
+            this.markersOnMap = [];
+            this.drawMarkers(this.rawMarkers.map((marker) => new Marker(marker.latitude, marker.longitude, Marker.TYPE_AIR_QUALITY, this.aqi_index_type, marker[this.aqi_index_type])));
+        },
+        drawMarkers(markers) {
+            markers.forEach(marker => {
+                this.markersOnMap.push(
                     leaflet
                         .marker([marker.latitude, marker.longitude], {
                             icon: leaflet.icon({
@@ -135,14 +169,20 @@ export default {
                                 shadowAnchor: [4, 62],
                             }),
                         })
-                        .addTo(this.map);
-                });
+                        .addTo(this.map)
+                );
+            });
+        },
+        async fillMarkers() {
+            await this.loadMarkers().then(markers => {
+                this.drawMarkers(markers);
             });
         },
         async loadMarkers() {
             try {
                 const response = await axios.get('/current-air-quality-indexes');
-                return response.data.map((marker) => new Marker(marker.latitude, marker.longitude, Marker.TYPE_AIR_QUALITY, marker.aqi_us));
+                this.rawMarkers = response.data;
+                return response.data.map((marker) => new Marker(marker.latitude, marker.longitude, Marker.TYPE_AIR_QUALITY, this.aqi_index_type, marker[this.aqi_index_type]));
             } catch (error) {
                 throw new Error('Error while fetching markers');
             }
