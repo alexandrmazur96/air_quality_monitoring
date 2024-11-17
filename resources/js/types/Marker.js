@@ -5,18 +5,20 @@ export class Marker {
     latitude;
     longitude;
     type;
+    airQualityIdxType;
     airQualityIdx;
 
-    constructor(latitude, longitude, type, airQualityIdx = null) {
-        this.validateParams(latitude, longitude, type, airQualityIdx);
+    constructor(latitude, longitude, type, airQualityIdxType = null, airQualityIdx = null) {
+        this.validateParams(latitude, longitude, type, airQualityIdxType, airQualityIdx);
 
         this.latitude = latitude;
         this.longitude = longitude;
         this.type = type;
         this.airQualityIdx = airQualityIdx;
+        this.airQualityIdxType = airQualityIdxType;
     }
 
-    validateParams(latitude, longitude, type, airQualityIdx) {
+    validateParams(latitude, longitude, type, airQualityIdxType, airQualityIdx) {
         if (type !== TYPE_USER && type !== TYPE_AIR_QUALITY) {
             throw new Error(`Invalid marker type: ${type}`);
         }
@@ -31,6 +33,9 @@ export class Marker {
         }
 
         if (type === TYPE_AIR_QUALITY) {
+            if (airQualityIdxType === null) {
+                throw new Error(`Air quality index type is required for marker type ${type}`);
+            }
             if (airQualityIdx === null) {
                 throw new Error(`Air quality index is required for marker type ${type}`);
             }
@@ -47,7 +52,6 @@ export class Marker {
     get longitude() {
         return this.longitude;
     }
-
     static get TYPE_USER() {
         return TYPE_USER;
     }
@@ -61,7 +65,11 @@ export class Marker {
             return 'images/markers/m-user.svg';
         }
         if (this.type === TYPE_AIR_QUALITY) {
-            return `images/markers/m-air-quality-${Math.round(parseFloat(this.airQualityIdx))}.svg`;
+            if (this.airQualityIdxType === 'aqi_us' && this.airQualityIdx > 300) {
+                return 'images/markers/m-air-quality-aqi_us-300-plus.svg';
+            }
+
+            return `images/markers/m-air-quality-${this.airQualityIdxType}-${Math.round(parseFloat(this.airQualityIdx))}.svg`;
         }
     }
 }
