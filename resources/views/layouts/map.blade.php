@@ -12,7 +12,7 @@
 
     @vite('resources/scss/app.scss')
 </head>
-<body>
+<body class="text-slate-900">
 <div id="app">
     <div class="grid grid-nogutter">
         <div class="col">

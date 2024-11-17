@@ -8,7 +8,7 @@
 
     @vite('resources/scss/app.scss')
 </head>
-<body>
+<body class="text-slate-900">
 
 @yield('content')
 

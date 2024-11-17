@@ -1,5 +1,5 @@
 <template>
-    <AppMenu />
+    <AppMenu/>
     <SelectButton optionLabel="label"
                   optionValue="value"
                   dataKey="value"
@@ -8,10 +8,13 @@
                   :options="aqi_index_types"
                   class="absolute"
                   style="z-index: 999999; left:50%;transform: translate(-50%, -50%);top:40px"
-                  @change="redrawMarkers" />
+                  @change="redrawMarkers">
+        <template #option="slotProps">
+            <p v-tooltip="slotProps.option.tooltip">{{ slotProps.option.label }}</p>
+        </template>
+    </SelectButton>
     <div id="leafletMap" class="h-screen w-full"></div>
 </template>
-
 <script>
 import leaflet from 'leaflet';
 import {useGeolocation} from "@vueuse/core";
@@ -20,6 +23,8 @@ import {toRaw} from "vue";
 import ukraine from "../../../geojson/ukraine-geoboundaries-adm0.json";
 import AppMenu from "../components/AppMenu.vue";
 import SelectButton from "primevue/selectbutton";
+import Card from "primevue/card";
+import Tooltip from "primevue/tooltip";
 
 // Kyiv coordinates
 const DEFAULT_LATITUDE = 50.450001;
@@ -33,14 +38,15 @@ const {isSupported, coords, error} = useGeolocation()
 
 export default {
     name: "AirQualityMap",
-    components: {AppMenu, SelectButton},
+    components: {AppMenu, SelectButton, Card},
+    directives: {tooltip: Tooltip},
     data() {
         return {
             aqi_index_type: AQI_INDEX_TYPE_US,
             aqi_index_types: [
-                {label: 'US', value: AQI_INDEX_TYPE_US},
-                {label: 'UK', value: AQI_INDEX_TYPE_UK},
-                {label: 'EU', value: AQI_INDEX_TYPE_EU},
+                {label: 'US', value: AQI_INDEX_TYPE_US, tooltip: 'test 1'},
+                {label: 'UK', value: AQI_INDEX_TYPE_UK, tooltip: 'test 2'},
+                {label: 'EU', value: AQI_INDEX_TYPE_EU, tooltip: 'test 3'},
             ],
             rawMarkers: [],
             markersOnMap: [],
