@@ -364,9 +364,9 @@ export default {
             })
             .addTo(this.map);
 
-        this.zoomToBorders();
-
         await this.fillMarkers();
+
+        this.zoomToBorders();
     },
     methods: {
         locateAndZoomIn() {
@@ -425,20 +425,21 @@ export default {
         },
         drawMarkers(markers) {
             markers.forEach(marker => {
-                this.markersOnMap.push(
-                    leaflet
-                        .marker([marker.latitude, marker.longitude], {
-                            icon: leaflet.icon({
-                                iconUrl: marker.getIcon(),
-                                iconSize: [25, 41],
-                                shadowSize: [50, 64],
-                                iconAnchor: [12, 41],
-                                shadowAnchor: [4, 62],
-                            }),
-                        })
-                        .addTo(this.map)
-                        .bindTooltip(
-                            `<div class="marker-tooltip">
+                const leafletMarker = leaflet
+                    .marker([marker.latitude, marker.longitude], {
+                        icon: leaflet.icon({
+                            iconUrl: marker.getIcon(),
+                            iconSize: [25, 41],
+                            shadowSize: [50, 64],
+                            iconAnchor: [12, 41],
+                            shadowAnchor: [4, 62],
+                        }),
+                    })
+                    .addTo(this.map);
+                this.markersOnMap.push(leafletMarker);
+                leafletMarker
+                    .bindTooltip(
+                        `<div class="marker-tooltip">
 <p></p><strong>Provider</strong>: ${marker.airQuality.provider}</p>
 <p></p><strong>PM10</strong>: ${marker.airQuality.pm10}</p>
 <p></p><strong>PM2.5</strong>: ${marker.airQuality.pm2_5}</p>
@@ -450,14 +451,13 @@ export default {
 <p></p><strong>CO</strong>: ${marker.airQuality.co}</p>
 <p></p><strong>Updated at</strong>: ${marker.airQuality.updated_at}</p>
 </div>`,
-                            {
-                                permanent: false,
-                                interactive: true,
-                                direction: 'top',
-                                className: 'marker-tooltip',
-                            }
-                        )
-                );
+                        {
+                            permanent: false,
+                            interactive: false,
+                            direction: 'top',
+                            className: 'marker-tooltip',
+                        }
+                    );
             });
         },
         async fillMarkers() {
