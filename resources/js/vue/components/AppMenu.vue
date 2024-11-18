@@ -1,5 +1,5 @@
 <template>
-    <Drawer v-model:visible="visible" @hide="showBtn">
+    <Drawer v-model:visible="visible" @hide="drawerClosed" @show="">
         <template #container="{ closeCallback }">
             <div class="flex flex-col h-full">
                 <div class="flex items-center justify-between px-6 pt-4 shrink-0">
@@ -61,6 +61,7 @@ export default {
         Drawer,
         Button
     },
+    emits: ['closed', 'opened'],
     data() {
         return {
             visible: false,
@@ -68,14 +69,16 @@ export default {
         }
     },
     methods: {
-        showBtn() {
+        drawerClosed() {
             setTimeout(() => {
                 this.btnVisible = true;
             }, 170);
+            this.$emit('closed');
         },
         displayDrawer() {
             this.visible = true;
             this.btnVisible = false;
+            this.$emit('opened');
         }
     }
 }

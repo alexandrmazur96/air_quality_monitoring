@@ -1,5 +1,5 @@
 <template>
-    <AppMenu v-if="!showLegend"/>
+    <AppMenu v-if="!showLegend" @closed="() => menuOpened = false" @opened="() => menuOpened = true"/>
     <SelectButton v-if="!showLegend"
                   optionLabel="label"
                   optionValue="value"
@@ -16,7 +16,7 @@
     </SelectButton>
     <div id="leafletMap" class="h-screen w-full"></div>
 
-    <Button icon="pi pi-question" rounded @click="() => showLegend = true" v-if="!showLegend"
+    <Button icon="pi pi-question" rounded @click="() => showLegend = true" v-if="!showLegend && !menuOpened"
             style="position: absolute; z-index: 9999999; left: 50px; bottom: 50px"/>
     <Dialog v-model:visible="showLegend"
             modal
@@ -165,6 +165,7 @@ export default {
     data() {
         return {
             showLegend: false,
+            menuOpened: false,
             usLegendTable: [
                 {
                     bgColor: '#009966',
