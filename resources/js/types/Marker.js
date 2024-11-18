@@ -5,20 +5,22 @@ export class Marker {
     latitude;
     longitude;
     type;
+    airQuality;
     airQualityIdxType;
     airQualityIdx;
 
-    constructor(latitude, longitude, type, airQualityIdxType = null, airQualityIdx = null) {
-        this.validateParams(latitude, longitude, type, airQualityIdxType, airQualityIdx);
+    constructor(latitude, longitude, type, airQuality = null, airQualityIdxType = null, airQualityIdx = null) {
+        this.validateParams(latitude, longitude, type, airQuality, airQualityIdxType, airQualityIdx);
 
         this.latitude = latitude;
         this.longitude = longitude;
         this.type = type;
+        this.airQuality = airQuality;
         this.airQualityIdx = airQualityIdx;
         this.airQualityIdxType = airQualityIdxType;
     }
 
-    validateParams(latitude, longitude, type, airQualityIdxType, airQualityIdx) {
+    validateParams(latitude, longitude, type, airQuality, airQualityIdxType, airQualityIdx) {
         if (type !== TYPE_USER && type !== TYPE_AIR_QUALITY) {
             throw new Error(`Invalid marker type: ${type}`);
         }
@@ -33,6 +35,9 @@ export class Marker {
         }
 
         if (type === TYPE_AIR_QUALITY) {
+            if (airQuality === null) {
+                throw new Error(`Air quality is required for marker type ${type}`);
+            }
             if (airQualityIdxType === null) {
                 throw new Error(`Air quality index type is required for marker type ${type}`);
             }
@@ -52,6 +57,11 @@ export class Marker {
     get longitude() {
         return this.longitude;
     }
+
+    get airQuality() {
+        return this.airQuality;
+    }
+
     static get TYPE_USER() {
         return TYPE_USER;
     }

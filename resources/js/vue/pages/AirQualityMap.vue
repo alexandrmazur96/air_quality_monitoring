@@ -132,6 +132,7 @@ import Button from "primevue/button";
 import Avatar from "primevue/avatar";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
+import {AirQuality} from "../../types/AirQuality.js";
 
 // Kyiv coordinates
 const DEFAULT_LATITUDE = 50.450001;
@@ -401,7 +402,25 @@ export default {
             });
 
             this.markersOnMap = [];
-            this.drawMarkers(this.rawMarkers.map((marker) => new Marker(marker.latitude, marker.longitude, Marker.TYPE_AIR_QUALITY, this.aqi_index_type, marker[this.aqi_index_type])));
+            this.drawMarkers(this.rawMarkers.map((marker) => new Marker(
+                marker.latitude,
+                marker.longitude,
+                Marker.TYPE_AIR_QUALITY,
+                new AirQuality(
+                    marker.provider,
+                    marker.pm10,
+                    marker.pm2_5,
+                    marker.nh3,
+                    marker.o3,
+                    marker.no,
+                    marker.no2,
+                    marker.so2,
+                    marker.co,
+                    marker.created_at,
+                ),
+                this.aqi_index_type,
+                marker[this.aqi_index_type]
+            )));
         },
         drawMarkers(markers) {
             markers.forEach(marker => {
@@ -417,6 +436,26 @@ export default {
                             }),
                         })
                         .addTo(this.map)
+                        .bindTooltip(
+                            `<div class="marker-tooltip">
+<p></p><strong>Provider</strong>: ${marker.airQuality.provider}</p>
+<p></p><strong>PM10</strong>: ${marker.airQuality.pm10}</p>
+<p></p><strong>PM2.5</strong>: ${marker.airQuality.pm2_5}</p>
+<p></p><strong>NH3</strong>: ${marker.airQuality.nh3}</p>
+<p></p><strong>O3</strong>: ${marker.airQuality.o3}</p>
+<p></p><strong>NO</strong>: ${marker.airQuality.no}</p>
+<p></p><strong>NO2</strong>: ${marker.airQuality.no2}</p>
+<p></p><strong>SO2</strong>: ${marker.airQuality.so2}</p>
+<p></p><strong>CO</strong>: ${marker.airQuality.co}</p>
+<p></p><strong>Updated at</strong>: ${marker.airQuality.updated_at}</p>
+</div>`,
+                            {
+                                permanent: false,
+                                interactive: true,
+                                direction: 'top',
+                                className: 'marker-tooltip',
+                            }
+                        )
                 );
             });
         },
@@ -429,7 +468,25 @@ export default {
             try {
                 const response = await axios.get('/current-air-quality-indexes');
                 this.rawMarkers = response.data;
-                return response.data.map((marker) => new Marker(marker.latitude, marker.longitude, Marker.TYPE_AIR_QUALITY, this.aqi_index_type, marker[this.aqi_index_type]));
+                return response.data.map((marker) => new Marker(
+                    marker.latitude,
+                    marker.longitude,
+                    Marker.TYPE_AIR_QUALITY,
+                    new AirQuality(
+                        marker.provider,
+                        marker.pm10,
+                        marker.pm2_5,
+                        marker.nh3,
+                        marker.o3,
+                        marker.no,
+                        marker.no2,
+                        marker.so2,
+                        marker.co,
+                        marker.created_at,
+                    ),
+                    this.aqi_index_type,
+                    marker[this.aqi_index_type]
+                ));
             } catch (error) {
                 throw new Error('Error while fetching markers');
             }

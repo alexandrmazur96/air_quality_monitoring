@@ -11,7 +11,7 @@ use Mazur\Application\AirQuality\ApiIntegrations\Enum\Provider;
 use Mazur\Application\AirQuality\AqiCalculator\AqiCalculator;
 use Mazur\Application\AirQuality\AqiCalculator\Enums\AqiType;
 
-final class AirQualityRepository
+final readonly class AirQualityRepository
 {
     public function __construct(private AqiCalculator $aqiCalculator)
     {
@@ -61,7 +61,23 @@ final class AirQualityRepository
         return DB::table('air_quality_records')
             ->join('cities', 'air_quality_records.city_id', '=', 'cities.id')
             ->where('air_quality_records.latest', '=', true)
-            ->select('provider', 'cities.latitude', 'cities.longitude', 'aqi_uk', 'aqi_us', 'aqi_eu')
+            ->select(
+                'provider',
+                'pm10',
+                'pm2_5',
+                'nh3',
+                'o3',
+                'no',
+                'no2',
+                'so2',
+                'co',
+                'air_quality_records.created_at',
+                'cities.latitude',
+                'cities.longitude',
+                'aqi_uk',
+                'aqi_us',
+                'aqi_eu'
+            )
             ->get();
     }
 }
