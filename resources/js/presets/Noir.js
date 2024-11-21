@@ -33,7 +33,7 @@ const Noir = definePreset(Lara, {
             },
             dark: {
                 primary: {
-                    color: '{primary.50}',
+                    color: '{primary.300}',
                     contrastColor: '{primary.950}',
                     hoverColor: '{primary.100}',
                     activeColor: '{primary.200}'
