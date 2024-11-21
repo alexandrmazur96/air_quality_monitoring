@@ -17,7 +17,7 @@
     <div id="leafletMap" class="h-screen w-full"></div>
 
     <Button icon="pi pi-question" rounded @click="() => showLegend = true" v-if="!showLegend && !menuOpened"
-            style="position: absolute; z-index: 9999999; left: 50px; bottom: 50px"/>
+            style="position: absolute; z-index: 9999999; right: 50px; top: 50px"/>
     <Dialog v-model:visible="showLegend"
             modal
             header="Air quality indexes explain"
@@ -370,7 +370,7 @@ export default {
     },
     methods: {
         locateAndZoomIn() {
-            this.map.setView([this.geolocationCoords.latitude, this.geolocationCoords.longitude], 10);
+            this.map.setView([parseFloat(this.geolocationCoords.latitude), parseFloat(this.geolocationCoords.longitude)], 10);
         },
         zoomToBorders() {
             this.map.fitBounds(this.border.getBounds());
