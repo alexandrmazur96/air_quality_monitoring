@@ -14,21 +14,19 @@ use Illuminate\Support\Facades\Log;
 use JsonException;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\Coordinates;
+use Mazur\Application\AirQuality\ApiIntegrations\Utils\PromiseUtils;
+use Mazur\Application\AirQuality\ApiIntegrations\Utils\ResponseUtils;
 use Mazur\Application\Repository\City\CitiesRepository;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
-/**
- * @psalm-type _Promise=array{
- *     state: string,
- *     value: Response
- * }
- */
+/** @psalm-import-type _Promise from PromiseUtils */
 final class OpenWeatherIntegration
 {
     private const string ACTION_AIR_POLLUTION = '/air_pollution';
 
     public function __construct(
         private readonly Client $httpClient,
+        private readonly PromiseUtils $promiseUtils,
+        private readonly ResponseUtils $responseUtils,
         private readonly CitiesRepository $citiesRepository
     ) {
     }
@@ -83,13 +81,13 @@ final class OpenWeatherIntegration
 
         /** @var _Promise $promise */
         foreach ($fulfilledPromises as $promise) {
-            if (!$this->isFulfilled($promise)) {
+            if (!$this->promiseUtils->isFulfilled($promise)) {
                 continue;
             }
 
             /** @var Response $response */
             $response = $promise['value'];
-            if (!$this->isOk($response)) {
+            if (!$this->responseUtils->isOk($response)) {
                 continue;
             }
 
@@ -117,13 +115,13 @@ final class OpenWeatherIntegration
     {
         /** @var _Promise $promise */
         foreach ($fulfilledPromises as $promise) {
-            if (!$this->isFulfilled($promise)) {
+            if (!$this->promiseUtils->isFulfilled($promise)) {
                 continue;
             }
 
             /** @var Response $response */
             $response = $promise['value'];
-            if (!$this->isOk($response)) {
+            if (!$this->responseUtils->isOk($response)) {
                 continue;
             }
 
@@ -152,16 +150,5 @@ final class OpenWeatherIntegration
                 nh3: $arr['list'][0]['components']['nh3'],
             );
         }
-    }
-
-    /** @param _Promise $promise */
-    private function isFulfilled(array $promise): bool
-    {
-        return $promise['state'] === 'fulfilled';
-    }
-
-    private function isOk(Response $response): bool
-    {
-        return $response->getStatusCode() === SymfonyResponse::HTTP_OK;
     }
 }
