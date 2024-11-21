@@ -21,6 +21,11 @@ final class CitiesRepository
         return City::query()->with($with)->get($fields);
     }
 
+    public function findByCity(string $city): ?City
+    {
+        return City::query()->where('name', '=', $city)->first();
+    }
+
     public function findByCoords(float $latitude, float $longitude): ?City
     {
         $latStr = (string)$latitude;
