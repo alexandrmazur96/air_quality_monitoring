@@ -34,6 +34,7 @@ final class PullFromOpenWeather extends Command
         $bar->start();
         DB::beginTransaction();
         $airQualityRepository->markCurrentRecordsAsNonLatest(Provider::OPEN_WEATHER);
+        $i = 0;
         /** @var Collection<array-key, City> $citiesChunk */
         foreach ($cities->chunk(self::CHUNK_SIZE) as $citiesChunk) {
             $resultsForChunk = $openWeatherIntegration->getAirQualityForMany(
@@ -48,6 +49,12 @@ final class PullFromOpenWeather extends Command
             $airQualityRepository->create(Provider::OPEN_WEATHER, $resultsForChunk);
 
             $bar->advance(self::CHUNK_SIZE);
+
+            if (++$i === 2) {
+                // free plan has limit of 60 requests per minute
+                // so we need to sleep for a minute after 2 chunks (50 requests)
+                sleep(60);
+            }
         }
         DB::commit();
         $bar->finish();
