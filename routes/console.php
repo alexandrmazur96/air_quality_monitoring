@@ -2,4 +2,5 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('air-quality:pull:open-weather')->twiceDaily(8, 20);
+Schedule::command('air-quality:pull:open-weather')->hourly();
+Schedule::command('air-quality:pull:weather-api')->hourly();
