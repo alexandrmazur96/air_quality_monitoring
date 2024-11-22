@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Mazur\Application\Repository\City;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Mazur\Models\City;
 
 final class CitiesRepository
@@ -21,9 +23,39 @@ final class CitiesRepository
         return City::query()->with($with)->get($fields);
     }
 
+    public function findCity(string $city, float $latitude, float $longitude): ?City
+    {
+        $cityObj = $this->findByCoords($latitude, $longitude);
+        if ($cityObj === null) {
+            Log::critical('Unable to find corresponding city for coordinates', [
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+            ]);
+
+            $cityObj = $this->findByCity($city);
+            if ($cityObj === null) {
+                Log::critical('Unable to find corresponding city for name', ['name' => $city]);
+
+                return null;
+            }
+        }
+
+        return $cityObj;
+    }
+
     public function findByCity(string $city): ?City
     {
-        return City::query()->where('name', '=', $city)->first();
+        $cityObj = City::query()->where('name', '=', $city)->first();
+        if ($cityObj === null) {
+            $cityId = DB::table('cities_alias')
+                ->where('alias', '=', $city)
+                ->limit(1)
+                ->value('city_id');
+
+            return City::find($cityId);
+        }
+
+        return $cityObj;
     }
 
     public function findByCoords(float $latitude, float $longitude): ?City
