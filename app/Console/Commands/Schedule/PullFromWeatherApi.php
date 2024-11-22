@@ -42,8 +42,7 @@ final class PullFromWeatherApi extends Command
                         latitude : $city->latitude,
                         longitude: $city->longitude
                     )
-                ),
-                true
+                )
             );
             $airQualityRepository->create(Provider::WEATHER_API, $resultsForChunk);
 

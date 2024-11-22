@@ -54,6 +54,7 @@ final class PullFromOpenWeather extends Command
                 // free plan has limit of 60 requests per minute
                 // so we need to sleep for a minute after 2 chunks (50 requests)
                 sleep(60);
+                $i = 0;
             }
         }
         DB::commit();
