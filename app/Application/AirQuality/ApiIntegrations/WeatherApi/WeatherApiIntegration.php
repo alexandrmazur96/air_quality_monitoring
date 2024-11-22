@@ -9,7 +9,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 use Mazur\Application\AirQuality\ApiIntegrations\Utils\PromiseUtils;
 use Mazur\Application\AirQuality\ApiIntegrations\Utils\ResponseUtils;
@@ -28,7 +27,7 @@ final class WeatherApiIntegration
     ) {
     }
 
-    public function getAirQualityForMany(Collection $coordinates, bool $asGenerator = false): Generator
+    public function getAirQualityForMany(Collection $coordinates): Generator
     {
         $promises = [];
         $url = config('weather_api.base_url') . self::ACTION_CURRENT;
@@ -66,25 +65,14 @@ final class WeatherApiIntegration
 
             $arr = json_decode($rawResponse, true, 512, JSON_THROW_ON_ERROR);
 
-            $city = $this->citiesRepository->findByCoords(
+            $city = $this->citiesRepository->findCity(
+                $arr['location']['name'],
                 (float)$arr['location']['lat'],
                 (float)$arr['location']['lon']
             );
 
             if ($city === null) {
-                Log::critical('Unable to find corresponding city for coordinates', [
-                    'latitude' => $arr['location']['lat'],
-                    'longitude' => $arr['location']['lon'],
-                ]);
-
-                $city = $this->citiesRepository->findByCity($arr['location']['name']);
-                if ($city === null) {
-                    Log::critical('Unable to find corresponding city for name', [
-                        'name' => $arr['location']['name'],
-                    ]);
-
-                    continue;
-                }
+                continue;
             }
 
             yield new AirQuality(
