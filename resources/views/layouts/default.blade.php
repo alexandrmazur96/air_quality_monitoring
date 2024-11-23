@@ -63,7 +63,7 @@
 </head>
 <body class="text-slate-900 montserrat-mono-regular">
 <div id="app">
-    <div class="grid">
+    <div class="grid grid-nogutter">
         <div class="col-12 col-offset-0 lg:col-offset-2 lg:col-8">
             @yield('content')
         </div>

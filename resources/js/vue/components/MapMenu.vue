@@ -30,9 +30,9 @@
                         </li>
                         <li>
                             <a class="flex items-center cursor-pointer pl-4 p-3 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
-                               href="/contact">
-                                <i class="mr-2 pi pi-envelope"></i>
-                                <span class="font-medium">Contact</span>
+                               href="/supported-cities">
+                                <i class="mr-2 pi pi-warehouse"></i>
+                                <span class="font-medium">Supported cities</span>
                             </a>
                         </li>
                     </ul>

@@ -40,9 +40,9 @@ export default {
                     link: '/about'
                 },
                 {
-                    label: 'Contact',
-                    icon: 'pi pi-envelope',
-                    link: '/contact'
+                    label: 'Supported cities',
+                    icon: 'pi pi-warehouse',
+                    link: '/supported-cities'
                 }
             ]
         }

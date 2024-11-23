@@ -26,10 +26,14 @@
                     informed about the air quality wherever you are.
                 </p>
 
-                <p class="text-sm mt-5 mb-5">
+                <p class="text-sm mt-5 mb-3">
                     This is the master's thesis project by <a href="https://github.com/alexandrmazur96" class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank">Oleksandr Mazur</a>, a student at the University of
                     Odesa I. I. Mechnykov National University, Ukraine (previously, Odesa State Environmental
                     University).
+                </p>
+
+                <p class="mb-5">
+                    The list of supported cities described on the <a href="/supported-cities" class="font-medium text-blue-500 underline dark:text-blue-500 hover:no-underline">Supported cities</a> page.
                 </p>
 
                 <p class="text-lg">Powered By:</p>
@@ -44,6 +48,9 @@
                     </li>
                     <li class="ml-5">
                         <a class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank" href="https://openweathermap.org/" title="Open Weather">Open Weather</a>
+                    </li>
+                    <li class="ml-5">
+                        <a class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank" href="https://primevue.org/" title="Prime vue"><i class="pi pi-prime mr-1"></i>Prime Vue</a>
                     </li>
                 </ul>
         </div>

@@ -5,11 +5,13 @@ import PrimeVue from 'primevue/config';
 import AirQualityMap from "./vue/pages/AirQualityMap.vue";
 import Noir from './presets/Noir.js';
 import About from "./vue/pages/About.vue";
+import Cities from "./vue/pages/Cities.vue";
 
 const appOpts = {
     components: {
         AirQualityMap,
-        About
+        About,
+        Cities
     }
 };
 
