@@ -4,10 +4,12 @@ import {createApp} from 'vue/dist/vue.esm-bundler';
 import PrimeVue from 'primevue/config';
 import AirQualityMap from "./vue/pages/AirQualityMap.vue";
 import Noir from './presets/Noir.js';
+import About from "./vue/pages/About.vue";
 
 const appOpts = {
     components: {
         AirQualityMap,
+        About
     }
 };
 

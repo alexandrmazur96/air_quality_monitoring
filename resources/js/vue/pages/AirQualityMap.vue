@@ -1,5 +1,5 @@
 <template>
-    <AppMenu v-if="!showLegend" @closed="() => menuOpened = false" @opened="() => menuOpened = true"/>
+    <MapMenu v-if="!showLegend" @closed="() => menuOpened = false" @opened="() => menuOpened = true"/>
     <SelectButton v-if="!showLegend"
                   optionLabel="label"
                   optionValue="value"
@@ -118,7 +118,7 @@ import {useGeolocation} from "@vueuse/core";
 import {Marker} from "../../types/Marker.js";
 import {toRaw} from "vue";
 import ukraine from "../../../geojson/ukraine-geoboundaries-adm0.json";
-import AppMenu from "../components/AppMenu.vue";
+import MapMenu from "../components/MapMenu.vue";
 import SelectButton from "primevue/selectbutton";
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
@@ -148,7 +148,7 @@ export default {
     name: "AirQualityMap",
     components: {
         Avatar,
-        AppMenu,
+        MapMenu,
         Button,
         SelectButton,
         Card,
