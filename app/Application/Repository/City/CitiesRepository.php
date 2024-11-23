@@ -23,6 +23,11 @@ final class CitiesRepository
         return City::query()->with($with)->get($fields);
     }
 
+    public function find(int $id): ?City
+    {
+        return City::query()->find($id);
+    }
+
     public function findCity(string $city, float $latitude, float $longitude): ?City
     {
         $cityObj = $this->findByCoords($latitude, $longitude);

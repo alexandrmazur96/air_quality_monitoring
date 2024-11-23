@@ -302,7 +302,7 @@ export default {
         };
     },
     async mounted() {
-        this.map = toRaw(leaflet.map('leafletMap', {zoomControl: false, zoomAnimation:false}));
+        this.map = toRaw(leaflet.map('leafletMap', {zoomControl: false, zoomAnimation: true}));
 
         const zoomToBordersFn = this.zoomToBorders;
         const zoomToUserFn = this.locateAndZoomIn;

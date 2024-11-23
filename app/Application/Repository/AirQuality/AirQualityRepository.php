@@ -11,6 +11,23 @@ use Mazur\Application\AirQuality\ApiIntegrations\Enum\Provider;
 use Mazur\Application\AirQuality\AqiCalculator\AqiCalculator;
 use Mazur\Application\AirQuality\AqiCalculator\Enums\AqiType;
 
+/**
+ * @psalm-type _AirQualityRecord = object{
+ *     provider: string,
+ *     pm10: float,
+ *     pm2_5: float,
+ *     nh3: float,
+ *     o3: float,
+ *     no: float,
+ *     no2: float,
+ *     so2: float,
+ *     co: float,
+ *     created_at: string,
+ *     latitude: float,
+ *     longitude: float,
+ *     city_id: int,
+ * }
+ */
 final readonly class AirQualityRepository
 {
     public function __construct(private AqiCalculator $aqiCalculator)
@@ -55,12 +72,13 @@ final readonly class AirQualityRepository
         });
     }
 
-    /** @return Collection<array-key, object{provider:string, latitude: float, longitude: float, aqi_uk: int, aqi_us: int, aqi_eu: int} */
-    public function getCurrentAirQualityIndexes(): Collection
+    /** @return Collection<array-key, _AirQualityRecord> */
+    public function getCurrentAirQualityIndexes(Provider $provider): Collection
     {
         return DB::table('air_quality_records')
             ->join('cities', 'air_quality_records.city_id', '=', 'cities.id')
             ->where('air_quality_records.latest', '=', true)
+            ->where('air_quality_records.provider', '=', $provider->value)
             ->select(
                 'provider',
                 'pm10',
@@ -76,7 +94,8 @@ final readonly class AirQualityRepository
                 'cities.longitude',
                 'aqi_uk',
                 'aqi_us',
-                'aqi_eu'
+                'aqi_eu',
+                'air_quality_records.city_id'
             )
             ->get();
     }
