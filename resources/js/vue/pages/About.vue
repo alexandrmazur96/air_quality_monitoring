@@ -1,9 +1,9 @@
 <template>
     <AppMenu/>
 
-    <div class="grid">
-        <div class="col-6 col-offset-3">
-                <h1 class="text-3xl mt-5 mb-3">
+    <div class="grid grid-nogutter p-3">
+        <div class="md:col-8 md:col-offset-2 col-12">
+                <h1 class="text-3xl md:mt-5 mt-2 mb-3">
                     The project focuses on collecting and rendering on a map air quality data
                 </h1>
                 <p class="mb-3">

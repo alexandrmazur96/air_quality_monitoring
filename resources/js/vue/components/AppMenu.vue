@@ -1,7 +1,7 @@
 <template>
     <Menubar :model="items">
         <template #start>
-            <a href="/"><Image src="images/logo.png" alt="Air Quality logotype that is link to home page" class="mr-3" imageClass="w-2rem h-2rem" /></a>
+            <a style="height: 3vh;" href="/"><Image src="images/logo.png" alt="Air Quality logotype that is link to home page" class="mr-3" imageClass="w-2rem h-2rem" /></a>
         </template>
 
         <template #item="{item}">

@@ -1,14 +1,14 @@
 <template>
     <AppMenu/>
 
-    <div class="grid">
+    <div class="grid grid-nogutter p-3">
         <div class="col-12">
-            <p class="text-lg mt-5">The list of supported cities is the following:</p>
+            <p class="text-lg md:mt-5 mt-2">The list of supported cities is the following:</p>
 
             <p v-if="!!errMsg" class="text-red-500 mt-8">{{ errMsg }}</p>
         </div>
 
-        <div v-if="!errMsg" class="col-3" v-for="citiesGroup in cities">
+        <div v-if="!errMsg" class="md:col-3 md:col-4" v-for="citiesGroup in cities">
             <ul class="list-disc mt-1">
                 <li class="ml-5" v-for="city in citiesGroup">{{ city.name }}</li>
             </ul>
