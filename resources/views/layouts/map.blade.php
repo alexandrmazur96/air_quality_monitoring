@@ -66,7 +66,7 @@
 
     @vite('resources/scss/app.scss')
 </head>
-<body class="text-slate-900 montserrat-mono-regular">
+<body class="montserrat-mono-regular">
 <div id="app">
     <div class="grid grid-nogutter">
         <div class="col">
