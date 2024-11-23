@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 use Mazur\Application\AirQuality\ApiIntegrations\Utils\PromiseUtils;
 use Mazur\Application\AirQuality\ApiIntegrations\Utils\ResponseUtils;
@@ -58,6 +59,11 @@ final class WeatherApiIntegration
             /** @var Response $response */
             $response = $promise['value'];
             if (!$this->responseUtils->isOk($response)) {
+                Log::critical('Weather API integration error', [
+                    'status' => $response->getStatusCode(),
+                    'headers' => $response->getHeaders(),
+                    'response' => $response->getBody()->getContents(),
+                ]);
                 continue;
             }
 
