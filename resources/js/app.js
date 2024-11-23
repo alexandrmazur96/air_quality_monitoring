@@ -6,12 +6,18 @@ import AirQualityMap from "./vue/pages/AirQualityMap.vue";
 import Material from '@primevue/themes/material';
 import About from "./vue/pages/About.vue";
 import Cities from "./vue/pages/Cities.vue";
+import AqiUs from "./vue/pages/AqiUs.vue";
+import AqiUk from "./vue/pages/AqiUk.vue";
+import AqiEu from "./vue/pages/AqiEu.vue";
 
 const appOpts = {
     components: {
         AirQualityMap,
         About,
-        Cities
+        Cities,
+        AqiUs,
+        AqiUk,
+        AqiEu,
     }
 };
 
@@ -19,7 +25,6 @@ const appOpts = {
 const primeVueOpts = {
     theme: {
         preset: Material,
-
     }
 };
 

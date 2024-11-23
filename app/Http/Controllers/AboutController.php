@@ -32,4 +32,31 @@ final class AboutController extends Controller
 
         return $responseFactory->view('about.cities');
     }
+
+    public function aqiUs(Request $request, ResponseFactory $responseFactory): Response
+    {
+        if ($request->ajax()) {
+            return $responseFactory->noContent(Response::HTTP_FORBIDDEN);
+        }
+
+        return $responseFactory->view('about.aqi_us');
+    }
+
+    public function aqiUk(Request $request, ResponseFactory $responseFactory): Response
+    {
+        if ($request->ajax()) {
+            return $responseFactory->noContent(Response::HTTP_FORBIDDEN);
+        }
+
+        return $responseFactory->view('about.aqi_uk');
+    }
+
+    public function aqiEu(Request $request, ResponseFactory $responseFactory): Response
+    {
+        if ($request->ajax()) {
+            return $responseFactory->noContent(Response::HTTP_FORBIDDEN);
+        }
+
+        return $responseFactory->view('about.aqi_eu');
+    }
 }
