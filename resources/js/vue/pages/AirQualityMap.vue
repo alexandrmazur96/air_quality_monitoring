@@ -449,7 +449,7 @@ export default {
 <p></p><strong>NO2</strong>: ${marker.airQuality.no2}</p>
 <p></p><strong>SO2</strong>: ${marker.airQuality.so2}</p>
 <p></p><strong>CO</strong>: ${marker.airQuality.co}</p>
-<p></p><strong>Updated at</strong>: ${marker.airQuality.updated_at}</p>
+<p></p><strong>Updated at</strong>: ${new Date(marker.airQuality.updated_at).toLocaleString()}</p>
 </div>`,
                         {
                             permanent: false,

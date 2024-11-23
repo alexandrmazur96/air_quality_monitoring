@@ -36,7 +36,7 @@ final class MaxSelectionSourceUnion implements SourceUnionInterface
                         aqiEu: (int)$source1AirQuality->aqi_eu,
                         latitude: (float)$source1AirQuality->latitude,
                         longitude: (float)$source1AirQuality->longitude,
-                        createdAt: $source1AirQuality->created_at
+                        createdAt: $source1AirQuality->created_at . ' UTC',
                     )
                 );
                 continue;
@@ -69,7 +69,7 @@ final class MaxSelectionSourceUnion implements SourceUnionInterface
                     aqiEu: null,
                     latitude: (float)$source1AirQuality->latitude,
                     longitude: (float)$source1AirQuality->longitude,
-                    createdAt: $source1AirQuality->created_at
+                    createdAt: $source1AirQuality->created_at . ' UTC',
                 )
             );
         }
@@ -97,7 +97,7 @@ final class MaxSelectionSourceUnion implements SourceUnionInterface
                         aqiEu: (int)$source2AirQuality->aqi_eu,
                         latitude: (float)$source2AirQuality->latitude,
                         longitude: (float)$source2AirQuality->longitude,
-                        createdAt: $source2AirQuality->created_at
+                        createdAt: $source2AirQuality->created_at . ' UTC'
                     )
                 );
             }
