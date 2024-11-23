@@ -122,6 +122,11 @@ final class OpenWeatherIntegration
             /** @var Response $response */
             $response = $promise['value'];
             if (!$this->responseUtils->isOk($response)) {
+                Log::critical('OpenWeather API integration error', [
+                    'status' => $response->getStatusCode(),
+                    'headers' => $response->getHeaders(),
+                    'response' => $response->getBody()->getContents(),
+                ]);
                 continue;
             }
 
