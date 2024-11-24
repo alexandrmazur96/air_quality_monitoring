@@ -20,10 +20,11 @@
 
                 <p class="mb-3">
                     Additionally, to monitor air quality based on your current location, users can utilize our
-                    <a href="/chat-bot" class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline">Telegram Chatbot</a>.
+                    <a target="_blank" href="https://t.me/AirQualityUaBot" class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline">Telegram Chatbot</a>.
                     The bot allows you to receive real-time air quality updates and alerts, providing a convenient way
-                    to stay
-                    informed about the air quality wherever you are.
+                    to stay informed about the air quality wherever you are.
+
+                    <div class="flex align-center"><img class="w-20rem" :src="'/images/telegram-qr.png'" alt="Telegram bot QR code"></div>
                 </p>
 
                 <p class="text-sm mt-5 mb-3">
