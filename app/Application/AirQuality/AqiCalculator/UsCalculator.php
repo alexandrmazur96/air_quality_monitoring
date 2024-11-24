@@ -7,6 +7,7 @@ namespace Mazur\Application\AirQuality\AqiCalculator;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 use Mazur\Application\AirQuality\AqiCalculator\Enums\Pollutant;
 use Mazur\Application\AirQuality\AqiCalculator\Exceptions\PollutantNotFoundException;
+use Mazur\Application\AirQuality\Entity\IndexStringRepresentation;
 use Mazur\Application\Converter\ConcentrationConverter;
 
 final class UsCalculator implements CalculatorInterface
@@ -170,5 +171,30 @@ final class UsCalculator implements CalculatorInterface
         }
 
         return ($Ihi - $Ilo) / ($BPhi - $BPlo) * ($concentration - $BPlo) + $Ilo;
+    }
+
+    public function getStringRepresentation(int $index): IndexStringRepresentation
+    {
+        $indexStr = match (true) {
+            $index >= 0 && $index <= 50 => 'Good',
+            $index >= 51 && $index <= 100 => 'Moderate',
+            $index >= 101 && $index <= 150 => 'Unhealthy for Sensitive Groups',
+            $index >= 151 && $index <= 200 => 'Unhealthy',
+            $index >= 201 && $index <= 300 => 'Very Unhealthy',
+            $index >= 301 => 'Hazardous',
+            default => 'Unknown',
+        };
+
+        $description = match (true) {
+            $index >= 0 && $index <= 50 => 'Air quality is considered satisfactory, and air pollution poses little or no risk.',
+            $index >= 51 && $index <= 100 => 'Air quality is acceptable. However, there may be a risk for some people, particularly those who are unusually sensitive to air pollution.',
+            $index >= 101 && $index <= 150 => 'Members of sensitive groups may experience health effects. The general public is less likely to be affected.',
+            $index >= 151 && $index <= 200 => 'Some members of the general public may experience health effects; members of sensitive groups may experience more serious health effects.',
+            $index >= 201 && $index <= 300 => 'Health alert: The risk of health effects is increased for everyone.',
+            $index >= 301 => 'Health warning of emergency conditions: everyone is more likely to be affected.',
+            default => 'Unknown',
+        };
+
+        return new IndexStringRepresentation($indexStr, $description);
     }
 }

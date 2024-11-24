@@ -7,6 +7,7 @@ namespace Mazur\Application\AirQuality\AqiCalculator;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
 use Mazur\Application\AirQuality\AqiCalculator\Enums\Pollutant;
 use Mazur\Application\AirQuality\AqiCalculator\Exceptions\PollutantNotFoundException;
+use Mazur\Application\AirQuality\Entity\IndexStringRepresentation;
 
 final class EuropeanCalculator implements CalculatorInterface
 {
@@ -94,5 +95,30 @@ final class EuropeanCalculator implements CalculatorInterface
         }
 
         throw new PollutantNotFoundException('Pollutant concentration not found in the scale: ' . $concentration);
+    }
+
+    public function getStringRepresentation(int $index): IndexStringRepresentation
+    {
+        $indexStr = match ($index) {
+            1 => 'Very Good',
+            2 => 'Fair',
+            3 => 'Moderate',
+            4 => 'Poor',
+            5 => 'Very Poor',
+            6 => 'Extremely Poor',
+            default => 'Unknown',
+        };
+
+        $description = match ($index) {
+            1 => 'Air quality is very good, posing no health risks.',
+            2 => 'Air quality is good, with very low risk for the population.',
+            3 => 'Air quality is moderate. Sensitive individuals may experience mild effects.',
+            4 => 'Air quality is poor. Health risks increase, particularly for sensitive individuals.',
+            5 => 'Air quality is very poor. Health effects are likely for everyone.',
+            6 => 'Air quality is extremely poor. Severe health effects are expected for the entire population. Immediate action is recommended.',
+            default => 'Unknown',
+        };
+
+        return new IndexStringRepresentation($indexStr, $description);
     }
 }

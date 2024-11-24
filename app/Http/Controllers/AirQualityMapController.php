@@ -11,7 +11,6 @@ use Mazur\Application\AirQuality\AqiCalculator\AqiCalculator;
 use Mazur\Application\AirQuality\AqiCalculator\Enums\AqiType;
 use Mazur\Application\AirQuality\SourceUnion\MaxSelectionSourceUnion;
 use Mazur\Application\Repository\AirQuality\AirQualityRepository;
-use Mazur\Application\Repository\City\CitiesRepository;
 use Mazur\Http\Requests\GetCurrentAirQualityIndexesRequest;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
@@ -29,7 +28,6 @@ final class AirQualityMapController extends Controller
     public function getCurrentAirQualityIndexes(
         GetCurrentAirQualityIndexesRequest $request,
         AirQualityRepository $airQualityRepository,
-        CitiesRepository $citiesRepository,
         MaxSelectionSourceUnion $maxSelectionSourceUnion,
         AqiCalculator $aqiCalculator,
         ResponseFactory $responseFactory

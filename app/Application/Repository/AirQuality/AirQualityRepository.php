@@ -30,6 +30,25 @@ use Mazur\Application\AirQuality\AqiCalculator\Enums\AqiType;
  */
 final readonly class AirQualityRepository
 {
+    private const array AIR_QUALITY_RECORD_FIELDS = [
+        'provider',
+        'pm10',
+        'pm2_5',
+        'nh3',
+        'o3',
+        'no',
+        'no2',
+        'so2',
+        'co',
+        'air_quality_records.created_at',
+        'cities.latitude',
+        'cities.longitude',
+        'aqi_uk',
+        'aqi_us',
+        'aqi_eu',
+        'air_quality_records.city_id'
+    ];
+
     public function __construct(private AqiCalculator $aqiCalculator)
     {
     }
@@ -79,24 +98,19 @@ final readonly class AirQualityRepository
             ->join('cities', 'air_quality_records.city_id', '=', 'cities.id')
             ->where('air_quality_records.latest', '=', true)
             ->where('air_quality_records.provider', '=', $provider->value)
-            ->select(
-                'provider',
-                'pm10',
-                'pm2_5',
-                'nh3',
-                'o3',
-                'no',
-                'no2',
-                'so2',
-                'co',
-                'air_quality_records.created_at',
-                'cities.latitude',
-                'cities.longitude',
-                'aqi_uk',
-                'aqi_us',
-                'aqi_eu',
-                'air_quality_records.city_id'
-            )
+            ->select(self::AIR_QUALITY_RECORD_FIELDS)
+            ->get();
+    }
+
+    /** @return Collection<array-key, _AirQualityRecord> */
+    public function getLatestAirQualityIndexForCity(int $cityId, Provider $provider): Collection
+    {
+        return DB::table('air_quality_records')
+            ->join('cities', 'air_quality_records.city_id', '=', 'cities.id')
+            ->where('city_id', '=', $cityId)
+            ->where('provider', '=', $provider->value)
+            ->where('latest', '=', true)
+            ->select(self::AIR_QUALITY_RECORD_FIELDS)
             ->get();
     }
 }

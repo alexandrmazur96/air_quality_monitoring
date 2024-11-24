@@ -7,6 +7,7 @@ namespace Mazur\Application\AirQuality\AqiCalculator;
 use Mazur\Application\AirQuality\AqiCalculator\Enums\Pollutant;
 use Mazur\Application\AirQuality\AqiCalculator\Exceptions\PollutantNotFoundException;
 use Mazur\Application\AirQuality\ApiIntegrations\Dto\AirQuality;
+use Mazur\Application\AirQuality\Entity\IndexStringRepresentation;
 
 final class UkCalculator implements CalculatorInterface
 {
@@ -121,5 +122,26 @@ final class UkCalculator implements CalculatorInterface
         }
 
         throw new PollutantNotFoundException('Pollutant ' . $pollutant->value . ' concentration not found in the scale: ' . $concentration);
+    }
+
+    public function getStringRepresentation(int $index): IndexStringRepresentation
+    {
+        $indexStr = match ($index) {
+            1, 2, 3 => 'Good',
+            4, 5, 6 => 'Moderate',
+            7, 8, 9 => 'Bad',
+            10 => 'Very Bad',
+            default => 'Unknown',
+        };
+
+        $description = match ($index) {
+            1, 2, 3 => 'Enjoy your usual outdoor activities.',
+            4, 5, 6 => 'Adults and children with lung problems, and adults with heart problems, who experience symptoms, should consider reducing strenuous physical activity, particularly outdoors.',
+            7, 8, 9 => 'Adults and children with lung problems, and adults with heart problems, should reduce strenuous physical exertion, particularly outdoors, and particularly if they experience symptoms. People with asthma may find they need to use their reliever inhaler more often. Older people should also reduce physical exertion.',
+            10 => 'Adults and children with lung problems, adults with heart problems, and older people, should avoid strenuous physical activity. People with asthma may find they need to use their reliever inhaler more often.',
+            default => 'Unknown',
+        };
+
+        return new IndexStringRepresentation($indexStr, $description);
     }
 }
