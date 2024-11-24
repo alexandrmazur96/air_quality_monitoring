@@ -1,7 +1,7 @@
 <template>
     <Menubar :model="items">
         <template #start>
-            <a style="height: 3vh;" href="/"><Image src="images/logo.png" alt="Air Quality logotype that is link to home page" class="mr-3" imageClass="w-2rem h-2rem" /></a>
+            <a style="height: 3vh;" href="/"><Image src="/images/logo.png" alt="Air Quality logotype that is link to home page" class="mr-3" imageClass="w-2rem h-2rem" /></a>
         </template>
 
         <template #item="{item}">
@@ -62,21 +62,21 @@ export default {
                             icon: '',
                             link: '/aqi-us',
                             asAvatar: true,
-                            img: 'images/flags/us.svg'
+                            img: '/images/flags/us.svg'
                         },
                         {
                             label: 'United Kingdom AQI',
                             icon: '',
                             link: '/aqi-uk',
                             asAvatar: true,
-                            img: 'images/flags/uk.svg'
+                            img: '/images/flags/uk.svg'
                         },
                         {
                             label: 'European Union AQI',
                             icon: '',
                             link: '/aqi-eu',
                             asAvatar: true,
-                            img: 'images/flags/eu.svg'
+                            img: '/images/flags/eu.svg'
                         }
                     ]
                 }
