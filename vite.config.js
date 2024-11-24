@@ -1,27 +1,13 @@
-import { defineConfig } from 'vite';
+import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import dotenv from "dotenv";
 import path from 'path';
-import fs from 'fs';
 
 dotenv.config();
 
 export default defineConfig({
     mode: process.env.NODE_ENV,
-    server: {
-        https: {
-            key: fs.readFileSync(path.resolve(__dirname, 'docker/certs/localhost-key.pem')),
-            cert: fs.readFileSync(path.resolve(__dirname, 'docker/certs/localhost.pem')),
-        },
-        host: '0.0.0.0',
-        hmr: {
-            host: '127.0.0.1'
-        },
-        watch: {
-            usePolling: true
-        }
-    },
     plugins: [
         vue({
             isProduction: process.env.NODE_ENV === 'production',
