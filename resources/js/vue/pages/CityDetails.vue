@@ -5,7 +5,7 @@
         <div class="col-12">
             <p class="text-lg md:mt-5 mt-2">{{ city.name }}, Ukraine ({{ city.latitude }}, {{ city.longitude }})</p>
         </div>
-        <div class="col-6 p-3">
+        <div class="col-12 md:col-6 p-3">
             <p class="text-lg md:mt-5 mt-2">Air quality indexes</p>
             <DataTable :value="aqis">
                 <template #empty>No air quality indexes information available!</template>
@@ -14,7 +14,7 @@
                 <Column field="description" header="Explanation" />
             </DataTable>
         </div>
-        <div class="col-6 p-3">
+        <div class="col-12 md:col-6 p-3">
             <p class="text-lg md:mt-5 mt-2">Pollutants details</p>
             <DataTable :value="measurements">
                 <template #empty>No measurements information available!</template>
