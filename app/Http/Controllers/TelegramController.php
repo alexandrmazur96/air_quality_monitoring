@@ -35,7 +35,7 @@ final class TelegramController extends Controller
     ): Response {
         Log::debug('Telegram webhook request', $request->all());
 
-        $tg = new Api();
+        $tg = new Api(config('telegram.bots.air-quality-ua.token'));
         $update = $tg->getWebhookUpdate(false);
         if ($update->isType('message')) {
             /** @var Message $message */
