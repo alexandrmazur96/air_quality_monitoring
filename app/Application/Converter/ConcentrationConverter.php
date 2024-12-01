@@ -22,10 +22,10 @@ final class ConcentrationConverter
     public function microgramsPerCubicMeterToPpm(Pollutant $pollutant, float $concentration): float
     {
         return match ($pollutant) {
-            Pollutant::CO => ($concentration * self::MOLAR_VOLUME_CO) / self::MOLECULAR_WEIGHT_CO,
-            Pollutant::SO2 => ($concentration * self::MOLAR_VOLUME_SO2) / self::MOLECULAR_WEIGHT_SO2,
-            Pollutant::O3 => ($concentration * self::MOLAR_VOLUME_O3) / self::MOLECULAR_WEIGHT_O3,
-            Pollutant::NO2 => ($concentration * self::MOLAR_VOLUME_NO2) / self::MOLECULAR_WEIGHT_NO2,
+            Pollutant::CO => ($concentration * self::MOLAR_VOLUME_CO) / self::MOLECULAR_WEIGHT_CO * 1000,
+            Pollutant::SO2 => ($concentration * self::MOLAR_VOLUME_SO2) / self::MOLECULAR_WEIGHT_SO2 * 1000,
+            Pollutant::O3 => ($concentration * self::MOLAR_VOLUME_O3) / self::MOLECULAR_WEIGHT_O3 * 1000,
+            Pollutant::NO2 => ($concentration * self::MOLAR_VOLUME_NO2) / self::MOLECULAR_WEIGHT_NO2 * 1000,
             default => throw new InvalidArgumentException('Pollutant not supported: ' . $pollutant->value),
         };
     }
