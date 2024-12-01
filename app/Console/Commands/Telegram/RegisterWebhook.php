@@ -15,7 +15,7 @@ final class RegisterWebhook extends Command
 
     public function handle(): void
     {
-        $api = new Api();
+        $api = new Api(config('telegram.bots.air-quality-ua.token'));
         $result = $api->setWebhook([
             'url' => config('telegram.bots.air-quality-ua.webhook_url'),
             'secret_token' => config('telegram.bots.air-quality-ua.webhook_auth_token'),

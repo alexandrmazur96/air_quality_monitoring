@@ -15,7 +15,7 @@ final class DeleteWebhook extends Command
 
     public function handle(): void
     {
-        $api = new Api();
+        $api = new Api(config('telegram.bots.air-quality-ua.token'));
         $result = $api->deleteWebhook();
 
         $result ? $this->info('Webhook deleted successfully') : $this->error('Failed to delete webhook');

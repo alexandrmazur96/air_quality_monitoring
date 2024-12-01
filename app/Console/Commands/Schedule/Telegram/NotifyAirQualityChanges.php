@@ -25,7 +25,7 @@ final class NotifyAirQualityChanges extends Command
     public function handle(UsersLocationRepository $usersLocationRepository, AqiCalculator $aqiCalculator): void {
         $this->info('Notifying all subscribed users about air quality changes');
 
-        $tg = new Api();
+        $tg = new Api(config('telegram.bots.air-quality-ua.token'));
 
         foreach ($usersLocationRepository->getAllSubscribed(with: ['nearestCity']) as $userLocation) {
             if (($this->airQualityRecords[$userLocation->nearestCity->id] ?? null) === null) {
