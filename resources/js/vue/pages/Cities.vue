@@ -10,7 +10,9 @@
 
         <div v-if="!errMsg" class="md:col-3 md:col-4" v-for="citiesGroup in cities">
             <ul class="list-disc mt-1">
-                <li class="ml-5" v-for="city in citiesGroup">{{ city.name }}</li>
+                <li class="ml-5" v-for="city in citiesGroup">
+                    <a :href="'/city/' + city.id">{{ city.name }}</a>
+                </li>
             </ul>
         </div>
     </div>

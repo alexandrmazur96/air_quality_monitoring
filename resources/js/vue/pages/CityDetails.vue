@@ -1,25 +1,27 @@
 <template>
-    <AppMenu />
+    <AppMenu/>
 
     <div class="grid grid-nogutter p-3">
         <div class="col-12">
             <p class="text-lg md:mt-5 mt-2">{{ city.name }}, Ukraine ({{ city.latitude }}, {{ city.longitude }})</p>
+            <p class="text-sm">Last updated: {{ lastUpdatedFormatted() }}</p>
+            <p class="text-sm">Data provided by: {{ provider }}</p>
         </div>
         <div class="col-12 md:col-6 p-3">
             <p class="text-lg md:mt-5 mt-2">Air quality indexes</p>
             <DataTable :value="aqis">
                 <template #empty>No air quality indexes information available!</template>
-                <Column field="type" header="AQI" />
-                <Column field="value" header="Value" />
-                <Column field="description" header="Explanation" />
+                <Column field="type" header="AQI"/>
+                <Column field="value" header="Value"/>
+                <Column field="description" header="Explanation"/>
             </DataTable>
         </div>
         <div class="col-12 md:col-6 p-3">
             <p class="text-lg md:mt-5 mt-2">Pollutants details</p>
             <DataTable :value="measurements">
                 <template #empty>No measurements information available!</template>
-                <Column field="pollutant" header="Pollutant" />
-                <Column field="value" header="Value" />
+                <Column field="pollutant" header="Pollutant"/>
+                <Column field="value" header="Value"/>
             </DataTable>
         </div>
     </div>
@@ -32,11 +34,17 @@ import DataTable from "primevue/datatable";
 
 export default {
     name: 'CityDetails',
-    props: ['city', 'measurements', 'aqis'],
+    props: ['city', 'measurements', 'aqis', 'lastUpdatedAt', 'provider'],
     components: {AppMenu, DataTable, Column},
     data() {
-        return {
-        };
+        return {};
     },
+    methods: {
+        lastUpdatedFormatted() {
+            return this.lastUpdatedAt === 'N/A'
+                ? 'N/A'
+                : new Date(this.lastUpdatedAt).toLocaleString();
+        }
+    }
 };
 </script>

@@ -33,7 +33,7 @@ final class CitiesController extends Controller
         ResponseFactory $responseFactory
     ): Response|JsonResponse {
         if ($request->ajax()) {
-            return $responseFactory->json($citiesRepository->all(['name'])->chunk(100));
+            return $responseFactory->json($citiesRepository->all(['id', 'name'])->chunk(100));
         }
 
         return $responseFactory->view('cities.supported-cities');
@@ -120,6 +120,8 @@ final class CitiesController extends Controller
                 'city' => $city->only('name', 'latitude', 'longitude'),
                 'measurements' => $measurements,
                 'aqis' => $aqis,
+                'last_updated_at' => $airQualityResult === null ? 'N/A' : $airQualityResult->createdAt,
+                'provider' => $airQualityResult === null ? 'N/A' : $airQualityResult->provider,
             ]
         );
     }
