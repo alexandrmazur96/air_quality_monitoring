@@ -30,7 +30,7 @@ final class CitiesRepository
 
     public function findCity(string $city, float $latitude, float $longitude): ?City
     {
-        $cityObj = $this->findByCoords($latitude, $longitude);
+        $cityObj = $this->findByCoords($latitude, $longitude, false);
         if ($cityObj === null) {
             Log::critical('Unable to find corresponding city for coordinates', [
                 'latitude' => $latitude,
@@ -41,11 +41,22 @@ final class CitiesRepository
             if ($cityObj === null) {
                 Log::critical('Unable to find corresponding city for name', ['name' => $city]);
 
-                return null;
+                return $this->getNearestCity($latitude, $longitude);
             }
         }
 
         return $cityObj;
+    }
+
+    private function getNearestCity(float $latitude, float $longitude): City
+    {
+        return City::selectRaw(
+            'id, name, ST_Distance(location, ST_GeomFromText(?)) as distance',
+            ["POINT($longitude $latitude)"]
+        )
+            ->orderBy('distance')
+            ->limit(1)
+            ->firstOrFail();
     }
 
     public function findByCity(string $city): ?City
@@ -63,7 +74,7 @@ final class CitiesRepository
         return $cityObj;
     }
 
-    public function findByCoords(float $latitude, float $longitude): ?City
+    public function findByCoords(float $latitude, float $longitude, bool $fallbackNearest = true): ?City
     {
         $latStr = (string)$latitude;
         $lonStr = (string)$longitude;
@@ -106,6 +117,13 @@ final class CitiesRepository
                 ->first();
         }
 
-        return $cities->first();
+        $city = $cities->first();
+        if (!$city) {
+            if ($fallbackNearest) {
+                return $this->getNearestCity($latitude, $longitude);
+            }
+
+            return null;
+        }
     }
 }
