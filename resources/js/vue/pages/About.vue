@@ -13,9 +13,21 @@
                 <p class="mb-3">The system provides access to multiple air quality indices:</p>
 
                 <ul class="list-disc mb-3">
-                    <li class="ml-5">US AQI (Air Quality Index)</li>
-                    <li class="ml-5">UK AQI</li>
-                    <li class="ml-5">EU AQI</li>
+                    <li class="ml-5">
+                        <a class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank" href="/aqi-us" title="AQI US">
+                            US AQI (Air Quality Index)
+                        </a>
+                    </li>
+                    <li class="ml-5">
+                        <a class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank" href="/aqi-uk" title="AQI UK">
+                            UK AQI
+                        </a>
+                    </li>
+                    <li class="ml-5">
+                        <a class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank" href="/aqi-eu" title="AQI EU">
+                            EU AQI
+                        </a>
+                    </li>
                 </ul>
 
                 <p class="mb-3">
