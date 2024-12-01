@@ -102,7 +102,7 @@ final class TelegramController extends Controller
 
                     $tg->sendMessage([
                         'chat_id' => $message->getChat()->getId(),
-                        'text' => 'Details: https://air-quality-ua.com/city/' . $userLocation->nearestCity->id,
+                        'text' => 'Details: https://air-quality.com.ua/city/' . $userLocation->nearestCity->id,
                     ]);
                 }
             }
