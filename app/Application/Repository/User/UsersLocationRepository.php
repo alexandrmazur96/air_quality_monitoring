@@ -13,13 +13,16 @@ final class UsersLocationRepository
 {
     public function store(string $chatId, float $latitude, float $longitude): UserLocation
     {
-        return UserLocation::updateOrCreate([
-            'chat_id' => $chatId,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'location' => DB::raw("ST_GeomFromText('POINT($latitude $longitude)')"),
-            'nearest_city_id' => $this->getNearestCity($latitude, $longitude)->id,
-        ]);
+        return UserLocation::updateOrCreate(
+            ['chat_id' => $chatId],
+            [
+                'chat_id' => $chatId,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                'location' => DB::raw("ST_GeomFromText('POINT($latitude $longitude)')"),
+                'nearest_city_id' => $this->getNearestCity($latitude, $longitude)->id,
+            ]
+        );
     }
 
     /**
@@ -34,7 +37,10 @@ final class UsersLocationRepository
 
     private function getNearestCity(float $latitude, float $longitude): City
     {
-        return City::selectRaw('id, name, ST_Distance(location, ST_GeomFromText(?)) as distance', ["POINT($longitude $latitude)"])
+        return City::selectRaw(
+            'id, name, ST_Distance(location, ST_GeomFromText(?)) as distance',
+            ["POINT($longitude $latitude)"]
+        )
             ->orderBy('distance')
             ->limit(1)
             ->firstOrFail();

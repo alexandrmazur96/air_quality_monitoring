@@ -28,7 +28,7 @@ final class NotifyAirQualityChanges extends Command
         $tg = new Api();
 
         foreach ($usersLocationRepository->getAllSubscribed(with: ['nearestCity']) as $userLocation) {
-            if ($this->airQualityRecords[$userLocation->nearestCity->id] === null) {
+            if (($this->airQualityRecords[$userLocation->nearestCity->id] ?? null) === null) {
                 $this->airQualityRecords[$userLocation->nearestCity->id] = $this->getAirQualityResultsForCity($userLocation->nearestCity->id);
             }
 
