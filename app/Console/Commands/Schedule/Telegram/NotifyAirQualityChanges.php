@@ -53,7 +53,7 @@ final class NotifyAirQualityChanges extends Command
 
             $tg->sendMessage([
                 'chat_id' => $userLocation->chat_id,
-                'text' => 'Details: https://air-quality-ua.com/city/' . $userLocation->nearestCity->id,
+                'text' => 'Details: https://air-quality.com.ua/city/' . $userLocation->nearestCity->id,
             ]);
         }
     }
